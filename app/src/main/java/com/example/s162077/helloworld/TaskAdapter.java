@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
  * Created by s162077 on 13-02-2017.
  */
 
-public class TaskAdapter {
+public class TaskAdapter extends BaseAdapter implements ListAdapter {
 
     private final Context context;
     private final List<Coordinate> coordinates;
@@ -48,8 +50,8 @@ public class TaskAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return Adapter.IGNORE_ITEM_VIEW_TYPE;
-    }  //getItemViewType
+        return Adapter.IGNORE_ITEM_VIEW_TYPE;//什么用???
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {//ListView 加载数据
@@ -57,16 +59,14 @@ public class TaskAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater class is used to instantiate layout XML file into its corresponding View objects.
-            convertView = inflater.inflate(R.layout.task_item, parent, false);//resource,root,attchToRoot
+            convertView = inflater.inflate(R.layout.read_from_sticker, parent, false);//resource,root,attchToRoot
+            //specify a root view and to prevent attachment to the root.
         }
-
-        TextView desc = (TextView) convertView.findViewById(R.id.task_description);
-        CheckBox completed = (CheckBox) convertView.findViewById(R.id.checkbox_completed);
+        TextView s = (TextView) convertView.findViewById(R.id.show);
 
         Coordinate c = this.coordinates.get(position);
-        desc.setText(c.getDescription());
-        completed.setChecked(c.isCompleted());
-        completed.setId(position);
+        s.setText(String.format("The coordinates read from the Sticker are ( x =%f, y=%f, z=%f )",
+                c.getX(),c.getY(),c.getZ()));
 
         return convertView;
     }

@@ -35,6 +35,12 @@ public class StatusDisplay {
                             + "y acc:" + nearable.yAcceleration + "\n"
                             + "z acc:" + nearable.zAcceleration;
                     getListener().onDisplay(information);
+                     Coordinate c = new Coordinate();
+                     c.setX(nearable.xAcceleration);
+                     c.setY(nearable.yAcceleration);
+                     c.setZ(nearable.zAcceleration);
+
+                    ;//????????????????????
 //                    try {
 //                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 //                        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
@@ -42,10 +48,14 @@ public class StatusDisplay {
 //                    } catch (Exception e) {
 //                        e.printStackTrace();
 //                    }
+
+
                 }
             }
         });
     }
+
+
 
     public Listener getListener() {
         return listener;

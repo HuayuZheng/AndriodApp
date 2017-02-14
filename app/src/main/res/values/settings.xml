@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="default_user">c606a925-d29e-4a50-8f86-b746a5498a34-bluemix</string>
+    <string name="default_dbname">sample_nosql_db</string>
+    <string name="default_api_key">c606a925-d29e-4a50-8f86-b746a5498a34-bluemix</string>
+    <string name="default_api_password">ea42c4e684fb2a651f5461352c7b8d69fbbf699e4f0b85559d83e1859423f92d</string>
+
+</resources>
