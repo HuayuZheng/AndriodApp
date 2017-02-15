@@ -29,29 +29,7 @@ public class Coordinate {
     public void setType(String type) {
         this.type = type;
     }
-/*
-    private boolean completed;
-    public boolean isCompleted() {
-        return this.completed;
-    }
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
 
-    private String description;
-    public String getDescription() {
-        return this.description;
-    }
-    public void setDescription(String desc) {
-        this.description = desc;
-    }
-
-     @Override
-    public String toString() {
-        return "{ desc: " + getDescription() + ", completed: " + isCompleted() + "}";
-    }
-    */
-    //??????????????
 
     public Map<String, Object> asMap() {
         // this could also be done by a fancy object mapper

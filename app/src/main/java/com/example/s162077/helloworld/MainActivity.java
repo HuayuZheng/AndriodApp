@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,14 +23,15 @@ public class MainActivity extends AppCompatActivity {
     private StatusDisplay statusDisplay;
     private static final String LOG_TAG = "MainActivity";
 
+    private CoordinateModel coord;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);//存了之前app的状态
         setContentView(R.layout.activity_main);
-
-        statusDisplay = new StatusDisplay(this);
+        coord = new CoordinateModel(this.getApplicationContext()) ;
+        statusDisplay = new StatusDisplay(this.getApplicationContext(),coord);
         statusDisplay.setListener(new StatusDisplay.Listener() {
 
             @Override
@@ -37,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
                 ((EditText) findViewById(R.id.edit_message)).setText(information);
             }
         });
-        findViewById(R.id.settingActivity).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.pushToCloud).setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, MainActivity.class);
+                coord.startPushReplication();
             }
         });
 

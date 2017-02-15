@@ -57,7 +57,6 @@ public class CoordinateModel {
 
     private final Context mContext;
     private final Handler mHandler;
-    private MainActivity mListener;
 
     public CoordinateModel(Context context) {
 
@@ -92,21 +91,6 @@ public class CoordinateModel {
         Log.d(LOG_TAG, "CoordinateModel set up " + path.getAbsolutePath());
     }
 
-    //
-    // GETTERS AND SETTERS
-    //
-
-    /**
-     * Sets the listener for replication callbacks as a weak reference.
-     * @param listener {@link MainActivity} to receive callbacks.
-     */
-   public void setReplicationListener(MainActivity listener) {
-        this.mListener = listener;
-   }
-
-    //
-    // DOCUMENT CRUD
-    //
 
     /**
      * Creates a task, assigning an ID.

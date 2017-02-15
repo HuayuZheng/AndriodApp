@@ -17,8 +17,8 @@ public class StatusDisplay {
     private String scanId;
 
 
-    public StatusDisplay(final Context context) {
-        final CoordinateModel coord = new CoordinateModel(context);
+    public StatusDisplay(final Context context,  final CoordinateModel coord) {
+
         beaconManager = new BeaconManager(context);
         beaconManager.setNearableListener(new BeaconManager.NearableListener() {
 

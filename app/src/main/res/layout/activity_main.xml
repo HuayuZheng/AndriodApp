@@ -7,10 +7,10 @@ android:layout_height="match_parent"
 android:orientation="horizontal">
 
     <Button
-        android:text="Button"
+        android:text="Push"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/settingActivity"
+        android:id="@+id/pushToCloud"
         android:layout_weight="1"
         android:hint="@string/setting_activity" />
 
