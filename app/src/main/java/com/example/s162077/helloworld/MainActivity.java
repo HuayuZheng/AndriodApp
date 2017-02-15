@@ -9,28 +9,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cloudant.sync.documentstore.DocumentStoreException;
 import com.estimote.sdk.SystemRequirementsChecker;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
     private StatusDisplay statusDisplay;
-    private static final String TAG = "MainActivity";
+    private static final String LOG_TAG = "MainActivity";
 
-    private static final int DIALOG_NEW_TASK = 1;
-    private static final int DIALOG_PROGRESS = 2;
-
-    static final String SETTINGS_CLOUDANT_USER = "pref_key_username";
-    static final String SETTINGS_CLOUDANT_DB = "pref_key_dbname";
-    static final String SETTINGS_CLOUDANT_API_KEY = "pref_key_api_key";
-    static final String SETTINGS_CLOUDANT_API_SECRET = "pref_key_api_password";
-
-    // Main data model object
-    private static TasksModel sTasks;
-    private TaskAdapter mTaskAdapter;
 
 
     @Override
@@ -54,58 +45,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Load default settings when we're first created.
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        // Register to listen to the setting changes because replicators
-        // uses information managed by shared preference.
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.registerOnSharedPreferenceChangeListener(this);
-
-        // Protect creation of static variable.
-        if (sTasks == null) {
-            // Model needs to stay in existence for lifetime of app.
-            this.sTasks = new TasksModel(this.getApplicationContext());
-        }
-
-        // Register this activity as the listener to replication updates
-        // while its active.
-        this.sTasks.setReplicationListener(this);
-
-        // Load the tasks from the model
-        this.reloadTasksFromModel();
-
-    }
-
-    private void reloadTasksFromModel() {
-        try {
-            List<Coordinate> coordinates = this.sTasks.coordinates();
-            this.mTaskAdapter = new TaskAdapter(this, coordinates);
-            this.setListAdapter(this.mTaskAdapter);
-        } catch (DocumentStoreException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void onContentChanged() {
-        super.onContentChanged();
-        View emptyView = findViewById(com.android.internal.R.id.empty);
-        mList = (ListView)findViewById(com.android.internal.R.id.list);
-        if (mList == null) {
-            throw new RuntimeException(
-                    "Your content must have a ListView whose id attribute is " +
-                            "'android.R.id.list'");
-        }
-        if (emptyView != null) {
-            mList.setEmptyView(emptyView);
-        }
-        mList.setOnItemClickListener(mOnClickListener);
-        if (mFinishedStart) {
-            setListAdapter(mAdapter);
-        }
-        mHandler.post(mRequestFocus);
-        mFinishedStart = true;
     }
 
     @Override
@@ -113,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if (!SystemRequirementsChecker.checkWithDefaultDialogs(this)) {
-            Log.e(TAG, "Can't scan for beacons, some pre-conditions were not met");
-            Log.e(TAG, "Read more about what's required at: http://estimote.github.io/Android-SDK/JavaDocs/com/estimote/sdk/SystemRequirementsChecker.html");
-            Log.e(TAG, "If this is fixable, you should see a popup on the app's screen right now, asking to enable what's necessary");
+            Log.e(LOG_TAG, "Can't scan for beacons, some pre-conditions were not met");
+            Log.e(LOG_TAG, "Read more about what's required at: http://estimote.github.io/Android-SDK/JavaDocs/com/estimote/sdk/SystemRequirementsChecker.html");
+            Log.e(LOG_TAG, "If this is fixable, you should see a popup on the app's screen right now, asking to enable what's necessary");
         } else {
-            Log.d(TAG, "Starting ShowroomManager updates");
+            Log.d(LOG_TAG, "Starting ShowroomManager updates");
             statusDisplay.startUpdates();
         }
     }
@@ -125,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "Stopping ShowroomManager updates");
+        Log.d(LOG_TAG, "Stopping ShowroomManager updates");
         statusDisplay.stopUpdates();
     }
 
@@ -133,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         statusDisplay.destroy();
-        this.sTasks.setReplicationListener(null);
     }
+
+
 
 }
 

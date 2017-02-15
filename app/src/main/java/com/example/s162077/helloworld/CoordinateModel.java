@@ -43,13 +43,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+public class CoordinateModel {
 
-/**
- * <p>Handles dealing with the DocumentStore and replication.</p>
- */
-public class TasksModel {
-
-    private static final String LOG_TAG = "TasksModel";
+    private static final String LOG_TAG = "CoordinateModel";
 
     private static final String DOCUMENT_STORE_DIR = "data";
     private static final String DOCUMENT_STORE_NAME = "tasks";
@@ -63,7 +59,7 @@ public class TasksModel {
     private final Handler mHandler;
     private MainActivity mListener;
 
-    public TasksModel(Context context) {
+    public CoordinateModel(Context context) {
 
         this.mContext = context;
 
@@ -93,7 +89,7 @@ public class TasksModel {
         // the main thread so the UI can update safely.
         this.mHandler = new Handler(Looper.getMainLooper());
 
-        Log.d(LOG_TAG, "TasksModel set up " + path.getAbsolutePath());
+        Log.d(LOG_TAG, "CoordinateModel set up " + path.getAbsolutePath());
     }
 
     //
