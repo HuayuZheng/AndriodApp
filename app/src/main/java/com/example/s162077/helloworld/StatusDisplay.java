@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Nearable;
+import com.estimote.sdk.telemetry.EstimoteTelemetry;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class StatusDisplay {
     private BeaconManager beaconManager;
     private Listener listener;
     private String scanId;
+
 
 
     public StatusDisplay(final Context context,  final CoordinateModel coord) {
@@ -29,13 +31,14 @@ public class StatusDisplay {
                     if (!nearable.identifier.equals("2fade4429af7aa73")) {
                         continue;
                     }
-                    String information =
+                    String informationA =
                             "ID:" + nearable.identifier + "\n"
                                     + "temp:" + nearable.temperature + "\n"
                                     + "x acc:" + nearable.xAcceleration + "\n"
                                     + "y acc:" + nearable.yAcceleration + "\n"
                                     + "z acc:" + nearable.zAcceleration;
-                    getListener().onDisplay(information);
+                    getListener().onDisplay(informationA);
+
                     Coordinate c = new Coordinate();
                     c.setX(nearable.xAcceleration);
                     c.setY(nearable.yAcceleration);

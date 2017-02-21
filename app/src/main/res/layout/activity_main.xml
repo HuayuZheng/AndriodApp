@@ -11,12 +11,19 @@ android:orientation="horizontal">
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/pushToCloud"
-        android:layout_weight="1"
-        android:hint="@string/setting_activity" />
+        android:layout_weight="1" />
 
-    <EditText android:id="@+id/edit_message"
-        android:layout_weight="1"
+    <TextView
+        android:text="sticker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/edit_message" />
+        android:id="@+id/sticker"
+        android:layout_weight="1" />
+
+    <TextView android:id="@+id/beacon"
+        android:text="beacon"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

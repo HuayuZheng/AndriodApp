@@ -1,54 +1,64 @@
 package com.example.s162077.helloworld;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.cloudant.sync.documentstore.DocumentStoreException;
 import com.estimote.sdk.SystemRequirementsChecker;
-
-import java.net.URISyntaxException;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
     private StatusDisplay statusDisplay;
+    private BeaconDisplay beaconDisplay;
     private static final String LOG_TAG = "MainActivity";
 
-    private CoordinateModel coord;
+    private static CoordinateModel coord;
+    private static BeaconModel beacon;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);//存了之前app的状态
         setContentView(R.layout.activity_main);
+
         coord = new CoordinateModel(this.getApplicationContext()) ;
+        beacon = new BeaconModel(this.getApplicationContext());
         statusDisplay = new StatusDisplay(this.getApplicationContext(),coord);
+        beaconDisplay = new BeaconDisplay(this.getApplicationContext(),beacon);
         statusDisplay.setListener(new StatusDisplay.Listener() {
 
             @Override
-            public void onDisplay(String information) {
-                ((EditText) findViewById(R.id.edit_message)).setText(information);
+            public void onDisplay(String informationA) {
+                ((TextView) findViewById(R.id.sticker)).setText(informationA);
             }
         });
+
         findViewById(R.id.pushToCloud).setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 coord.startPushReplication();
             }
+
+
+        });
+
+        beaconDisplay.setListener(new BeaconDisplay.Listener() {
+            @Override
+            public void onDisplay(String informationB) {
+                ((TextView)findViewById(R.id.beacon)).setText(informationB);
+            }
         });
 
 
-    }
+        };
+
+
+
+
 
     @Override
     protected void onResume() {

@@ -1,26 +1,8 @@
-/*
- * Copyright © 2017 IBM Corp. All rights reserved.
- *
- * Copyright © 2015 Cloudant, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language governing permissions
- * and limitations under the License.
- */
-
 package com.example.s162077.helloworld;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cloudant.sync.documentstore.ConflictException;
@@ -43,7 +25,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoordinateModel {
+/**
+ * Created by s162077 on 21-02-2017.
+ */
+
+
+public class BeaconModel {
 
     private static final String LOG_TAG = "CoordinateModel";
 
@@ -59,7 +46,7 @@ public class CoordinateModel {
     private final Handler mHandler;
     private MainActivity mListener;
 
-    public CoordinateModel(Context context) {
+    public BeaconModel(Context context) {
 
         this.mContext = context;
 
@@ -106,12 +93,12 @@ public class CoordinateModel {
      * @param task task to create
      * @return new revision of the document
      */
-    public Coordinate createDocument(Coordinate task) {
+    public BeaconParameters createDocument(BeaconParameters task) {
         DocumentRevision rev = new DocumentRevision();
         rev.setBody(DocumentBodyFactory.create(task.asMap()));
         try {
             DocumentRevision created = this.mDocumentStore.database().create(rev);
-            return Coordinate.fromRevision(created);
+            return BeaconParameters.fromRevision(created);
         } catch (DocumentException de) {
             return null;
         } catch (DocumentStoreException de) {
@@ -127,12 +114,12 @@ public class CoordinateModel {
      *      match the current rev in the DocumentStore.
      * @throws DocumentStoreException if there was an error updating the rev for this task
      */
-    public Coordinate updateDocument(Coordinate task) throws ConflictException, DocumentStoreException {
+    public BeaconParameters updateDocument(BeaconParameters task) throws ConflictException, DocumentStoreException {
         DocumentRevision rev = task.getDocumentRevision();
         rev.setBody(DocumentBodyFactory.create(task.asMap()));
         try {
             DocumentRevision updated = this.mDocumentStore.database().update(rev);
-            return Coordinate.fromRevision(updated);
+            return BeaconParameters.fromRevision(updated);
         } catch (DocumentException de) {
             return null;
         }
@@ -153,20 +140,20 @@ public class CoordinateModel {
     /**
      * <p>Returns all {@code Task} documents in the DocumentStore.</p>
      */
-    public List<Coordinate> coordinates() throws DocumentStoreException {
+    public List<BeaconParameters> coordinates() throws DocumentStoreException {
         int nDocs = this.mDocumentStore.database().getDocumentCount();
         List<DocumentRevision> all = this.mDocumentStore.database().read(0, nDocs, true);
-        List<Coordinate> coordinates = new ArrayList<Coordinate>();
+        List<BeaconParameters> beaconParameterses = new ArrayList<BeaconParameters>();
 
         // Filter all documents down to those of type Task.
         for(DocumentRevision rev : all) {
-            Coordinate c = Coordinate.fromRevision(rev);
-            if (c != null) {
-                coordinates.add(c);
+            BeaconParameters b = BeaconParameters.fromRevision(rev);
+            if (b != null) {
+                beaconParameterses.add(b);
             }
         }
 
-        return coordinates;
+        return beaconParameterses;
     }
 
     //
