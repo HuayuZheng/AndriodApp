@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.SystemRequirementsChecker;
 
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static CoordinateModel coord;
     private static BeaconModel beacon;
+    private BeaconManager beaconManager;
 
 
     @Override
@@ -26,8 +28,16 @@ public class MainActivity extends AppCompatActivity {
 
         coord = new CoordinateModel(this.getApplicationContext()) ;
         beacon = new BeaconModel(this.getApplicationContext());
-        statusDisplay = new StatusDisplay(this.getApplicationContext(),coord);
-        beaconDisplay = new BeaconDisplay(this.getApplicationContext(),beacon);
+        beaconManager = new BeaconManager(this.getApplicationContext());
+        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                beaconManager.startNearableDiscovery();
+                beaconManager.startTelemetryDiscovery();
+            }
+        });
+        beaconDisplay = new BeaconDisplay(this.getApplicationContext(),beacon,beaconManager);
+        statusDisplay = new StatusDisplay(this.getApplicationContext(),coord,beaconManager);
         statusDisplay.setListener(new StatusDisplay.Listener() {
 
             @Override
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        beaconDisplay.setListener(new BeaconDisplay.Listener() {
+        beaconDisplay.setBeaconListener(new BeaconDisplay.BeaconListener() {
             @Override
             public void onDisplay(String informationB) {
                 ((TextView)findViewById(R.id.beacon)).setText(informationB);
@@ -71,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d(LOG_TAG, "Starting ShowroomManager updates");
             statusDisplay.startUpdates();
+            beaconDisplay.startUpdates();
         }
     }
 
@@ -79,12 +90,14 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.d(LOG_TAG, "Stopping ShowroomManager updates");
         statusDisplay.stopUpdates();
+        beaconDisplay.stopUpdates();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         statusDisplay.destroy();
+        beaconDisplay.destroy();
     }
 
 

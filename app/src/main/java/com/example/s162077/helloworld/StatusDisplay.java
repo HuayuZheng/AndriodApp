@@ -19,9 +19,8 @@ public class StatusDisplay {
 
 
 
-    public StatusDisplay(final Context context,  final CoordinateModel coord) {
-
-        beaconManager = new BeaconManager(context);
+    public StatusDisplay(final Context context,  final CoordinateModel coord, BeaconManager beaconManager) {
+        this.beaconManager = beaconManager;
         beaconManager.setNearableListener(new BeaconManager.NearableListener() {
 
             @Override
@@ -71,12 +70,12 @@ public class StatusDisplay {
     }
 
     public void startUpdates() {
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+      /*  beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
                 scanId = beaconManager.startNearableDiscovery();
             }
-        });
+        });*/
     }
 
     public void stopUpdates() {
